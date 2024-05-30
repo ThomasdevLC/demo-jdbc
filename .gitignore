@@ -1,0 +1,6 @@
+target/
+
+# Facultatif  
+.settings/
+.classpath
+.project
