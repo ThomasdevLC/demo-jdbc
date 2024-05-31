@@ -3,10 +3,10 @@ package fr.diginamic.props;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Iterator;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 
-public class TestConfigurationProps {
+public class TestDelete {
 
 	public static void main(String[] args) {
 		ResourceBundle config = ResourceBundle.getBundle("config");
@@ -14,20 +14,17 @@ public class TestConfigurationProps {
 		String user = config.getString("database.user");
 		String pwd = config.getString("database.password");
 
-		Iterator<String> iterateur = config.getKeys().asIterator();
-		while (iterateur.hasNext()) {
-			String key = iterateur.next();
-			System.out.println(key);
-		}
-		System.out.println(url);
-
+		Connection conn = null;
+		Statement stmt = null;
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-			Connection conn = DriverManager.getConnection(url, user, pwd);
+			conn = DriverManager.getConnection(url, user, pwd);
+			stmt = conn.createStatement();
+			int nb = stmt.executeUpdate("DELETE FROM FOURNISSEUR WHERE NOM = 'La Maison des Peintures'");
 
-		
-			System.out.println(conn.isClosed());
+			System.out.println(nb);
 
+			stmt.close();
 			conn.close();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
